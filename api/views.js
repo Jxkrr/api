@@ -11,14 +11,13 @@ export default async function handler(req, res) {
     const KV_REST_API_TOKEN = process.env.KV_REST_API_TOKEN;
     
     // Get the site identifier from query parameters
-    // Example: /api/views?site=mysite or /api/views?site=friendsite
     const site = req.query.site || 'default';
     
     // Validate the site to prevent arbitrary keys
-    const allowedSites = ['mysite', 'friendsite'];
+    const allowedSites = ['banklimit', 'beacenpop'];
     if (!allowedSites.includes(site) && site !== 'default') {
       return res.status(400).json({ 
-        error: 'Invalid site parameter. Use "mysite" or "friendsite"', 
+        error: 'Invalid site parameter. Use "banklimit" or "beacenpop"', 
         success: false 
       });
     }
