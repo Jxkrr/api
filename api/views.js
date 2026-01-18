@@ -11,11 +11,11 @@ export default async function handler(req, res) {
     const KV_REST_API_TOKEN = process.env.KV_REST_API_TOKEN;
     
     // Get the site identifier from query parameters
-    const site = req.query.site || 'default';
+    const site = req.query.site || 'banklimit';
     
     // Validate the site to prevent arbitrary keys
     const allowedSites = ['banklimit', 'beacenpop'];
-    if (!allowedSites.includes(site) && site !== 'default') {
+    if (!allowedSites.includes(site)) {
       return res.status(400).json({ 
         error: 'Invalid site parameter. Use "banklimit" or "beacenpop"', 
         success: false 
@@ -23,7 +23,7 @@ export default async function handler(req, res) {
     }
     
     // Create a unique key for each website
-    const key = `views:${site}`;
+    const key = `page-views-${site}`;
     
     // Increment counter using REST API
     const response = await fetch(`${KV_REST_API_URL}/incr/${key}`, {
@@ -35,11 +35,7 @@ export default async function handler(req, res) {
     const data = await response.json();
     const views = data.result;
     
-    return res.status(200).json({ 
-      views, 
-      success: true,
-      site 
-    });
+    return res.status(200).json({ views, success: true, site });
   } catch (error) {
     console.error('Error:', error);
     return res.status(500).json({ 
